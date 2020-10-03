@@ -1,7 +1,3 @@
-with open('files/1.txt') as f:
-    input_ = f.read().strip()
-
-
 def calculate_captcha1(captcha):
     counter = 0
 
@@ -27,6 +23,9 @@ def calculate_captcha2(captcha):
 
 
 if __name__ == '__main__':
+    with open('files/1.txt') as f:
+        input_ = f.read().strip()
+
     # Part 1
     assert calculate_captcha1('1122') == 3
     assert calculate_captcha1('1111') == 4
