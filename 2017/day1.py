@@ -19,18 +19,11 @@ def calculate_captcha1(captcha):
 
 
 def calculate_captcha2(captcha):
-    counter = 0
-
-    # Split the list into 2 since guaranteed to be even
-    # Also only need to check one half, and double at the end
+    # Split the list into 2, check equivalence.  Also only need to check one half, and double at the end.
     half = len(captcha) // 2
     a = captcha[:half]
     b = captcha[half:]
-    for i in range(half):
-        if a[i] == b[i]:
-            counter += 2 * int(a[i])
-
-    return counter
+    return sum(2 * int(a[i]) for i in range(half) if a[i] == b[i])
 
 
 if __name__ == '__main__':
