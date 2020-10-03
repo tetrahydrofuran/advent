@@ -2,7 +2,7 @@ with open('files/1.txt') as f:
     input_ = f.read().strip()
 
 
-def calculate_captcha(captcha):
+def calculate_captcha1(captcha):
     counter = 0
 
     for i, digit in enumerate(captcha):
@@ -18,11 +18,33 @@ def calculate_captcha(captcha):
     return counter
 
 
+def calculate_captcha2(captcha):
+    counter = 0
+
+    # Split the list into 2 since guaranteed to be even
+    # Also only need to check one half, and double at the end
+    half = len(captcha) // 2
+    a = captcha[:half]
+    b = captcha[half:]
+    for i in range(half):
+        if a[i] == b[i]:
+            counter += 2 * int(a[i])
+
+    return counter
+
+
 if __name__ == '__main__':
     # Part 1
-    assert calculate_captcha('1122') == 3
-    assert calculate_captcha('1111') == 4
-    assert calculate_captcha('1234') == 0
-    assert calculate_captcha('91212129') == 9
+    assert calculate_captcha1('1122') == 3
+    assert calculate_captcha1('1111') == 4
+    assert calculate_captcha1('1234') == 0
+    assert calculate_captcha1('91212129') == 9
 
-    print('Part 1:', calculate_captcha(input_))
+    print('Part 1:', calculate_captcha1(input_))
+
+    assert calculate_captcha2('1212') == 6
+    assert calculate_captcha2('1221') == 0
+    assert calculate_captcha2('123425') == 4
+    assert calculate_captcha2('123123') == 12
+    assert calculate_captcha2('12131415') == 4
+    print('Part 2:', calculate_captcha2(input_))
