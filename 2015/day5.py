@@ -1,4 +1,6 @@
 from typing import List
+import itertools
+import re
 
 FORBIDDEN_STRINGS = ('ab', 'cd', 'pq', 'xy')
 
@@ -25,6 +27,33 @@ def part1(inputs: List[str]) -> int:
     return satisfying
 
 
+def naughty_nice_check2(string: str) -> bool:
+    """
+    Uses regex to search all combinations of satisfying conditions; slow, but don't need to think too hard about it.
+    """
+    letters = 'abcdefghijklmnopqrstuvwxyz'
+    # All combinations of two letters, search for single-separated
+    # has_double_doubles = False
+    # for two_letter_combo in itertools.product(letters, letters):
+    #     x, y = two_letter_combo
+    #     if re.findall('{0}.*{0}'.format(x, y), string):
+    #         has_double_doubles = True
+    #         break
+    has_double_doubles = any(
+        re.findall('{0}.*{0}'.format(x + y), string) for x, y in itertools.product(letters, letters)
+    )
+
+    has_separated_letter = any(
+        re.findall('{0}.{0}'.format(letter), string) for letter in letters
+    )
+
+    return has_double_doubles and has_separated_letter
+
+
+def part2(inputs: List[str]) -> int:
+    return sum(naughty_nice_check2(s) for s in inputs)
+
+
 if __name__ == '__main__':
     with open('files/5.txt') as f:
         input_ = f.readlines()
@@ -33,4 +62,10 @@ if __name__ == '__main__':
     assert not naughty_nice_check('jchzalrnumimnmhp')
     assert not naughty_nice_check('haegwjzuvuyypxyu')
     assert not naughty_nice_check('dvszwmarrgswjxmb')
+
+    assert naughty_nice_check2('xxyxx')
+    assert naughty_nice_check2('qjhvhtzxzqqjkmpb')
+    assert not naughty_nice_check2('uurcxstgmygtbstg')
+    assert not naughty_nice_check2('ieodomkazucvgmuy')
     print(part1(input_))
+    print(part2(input_))
