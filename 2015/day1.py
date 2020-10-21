@@ -1,7 +1,7 @@
 from collections import Counter
 
 
-def part1(paren):
+def part1(paren: str) -> int:
     """
     Bulk calculation +1 for open paren, -1 for close paren
     """
@@ -9,7 +9,7 @@ def part1(paren):
     return c['('] - c[')']
 
 
-def part2(paren):
+def part2(paren: str) -> int:
     """
     Take iterable approach to counting floors, break when -1
     """
