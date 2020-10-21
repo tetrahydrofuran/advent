@@ -1,4 +1,9 @@
-from typing import List
+from typing import List, Tuple
+
+
+def _prep(item: str) -> List[int]:
+    """Strips trailing \n and splits the dimension values"""
+    return [int(i) for i in item.strip().split('x')]
 
 
 def get_surf_and_extra(l: int, w: int, h: int) -> int:
@@ -16,8 +21,21 @@ def part1(dimensions: List[str]) -> int:
     """
     running_total = 0
     for dim in dimensions:
-        dim = dim.strip().split('x')
-        running_total += get_surf_and_extra(*(int(x) for x in dim))
+        dim = _prep(dim)
+        running_total += get_surf_and_extra(*dim)
+    return running_total
+
+
+def part2(dimensions: List[str]) -> int:
+    """
+    Gets smallest perimeter and volume
+    """
+    running_total = 0
+    for dim in dimensions:
+        dim = _prep(dim)
+        dim = sorted(dim)
+        running_total += (dim[0] + dim[1]) * 2  # Sum 2 smallest dim-perimeter
+        running_total += dim[0] * dim[1] * dim[2]  # Sum volume
     return running_total
 
 
@@ -25,3 +43,4 @@ if __name__ == '__main__':
     with open('files/2.txt') as f:
         input_ = f.readlines()
     print(part1(input_))
+    print(part2(input_))
