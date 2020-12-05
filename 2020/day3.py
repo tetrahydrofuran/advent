@@ -15,7 +15,21 @@ def part1(input_map, slope=(3, 1)):
     return trees
 
 
+def part2(input_map):
+    def t(dx, dy):
+        return part1(input_map, (dx, dy))
+
+    i = t(1, 1)
+    j = t(3, 1)
+    k = t(5, 1)
+    m = t(7, 1)
+    n = t(1, 2)
+    print(i, j, k, m, n)
+    return i * j * k * m * n
+
+
 if __name__ == '__main__':
     with open('files/3.txt') as f:
         input_ = f.readlines()
     print(part1(input_))
+    print(part2(input_))
