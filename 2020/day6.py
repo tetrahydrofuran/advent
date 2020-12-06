@@ -5,8 +5,21 @@ def part1(answers):
     return sum(len(set(group.replace(' ', ''))) for group in answers)
 
 
-def part2(answers):
-    pass
+def part2(raw_answers):
+    """
+    Get unanimous answers by taking the intersection of each answer group as they come.
+    """
+    unanimous_answers = 0
+    group = None
+    for line in raw_answers:
+        if line != '\n':
+            line = line.replace('\n', '')
+            group = set(line) if group is None else group.intersection(line)
+        else:
+            unanimous_answers += len(group)
+            group = None  # Reset the answer group
+    unanimous_answers += len(group)
+    return unanimous_answers
 
 
 if __name__ == '__main__':
@@ -17,4 +30,4 @@ if __name__ == '__main__':
     print(input_)
     print(answer_sets)
     print(part1(answer_sets))
-    # print(part2(input_))
+    print(part2(input_))
