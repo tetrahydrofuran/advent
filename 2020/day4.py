@@ -11,6 +11,7 @@ def get_passports(inputs):
             p = ''
         else:
             p += line.replace('\n', ' ')
+    passports.append(p)  # Catch the last block
     return passports
 
 
@@ -49,8 +50,8 @@ def part2(parsed_passports):
                 p['ecl'] in ('amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'),  # Check eyes
                 p['pid'].isnumeric() and len(p['pid']) == 9,  # Passport ID check
             ]
-            print(p)
-            print(conditions)
+            # print(p)
+            # print(conditions)
             valid += all(conditions)
         except KeyError:
             continue  # Missing field or failed to satisfy
