@@ -1,6 +1,7 @@
 from typing import Sequence
 
 
+# TODO add termination for end of sequence
 class HandheldGameConsole:
     def __init__(self):
         self.accumulator = self.instruction_pointer = 0
@@ -11,6 +12,13 @@ class HandheldGameConsole:
         self.program = program
         self.line_execution_count = [0 for i in range(len(self.program))]
         self.accumulator = self.instruction_pointer = 0
+
+    def execute_program(self):
+        """Generic program execution to end, returning final accumulator value."""
+        terminate = False
+        while not terminate:
+            _, _, terminate = self.execute_next_command()
+        return self.accumulator
 
     def execute_next_command(self):
         command = self.program[self.instruction_pointer]
@@ -27,10 +35,9 @@ class HandheldGameConsole:
         }[operation.lower()](value)
         curr_acc = self.accumulator
 
-        print(operation, value, '|', prior_acc, curr_acc)
-        return prior_acc, curr_acc
-
-        # region Commands
+        termination = self.instruction_pointer >= len(self.program)
+        print(operation, value, '|', prior_acc, curr_acc, '|', termination)
+        return prior_acc, curr_acc, termination
 
     def nop(self, value: int = 0):
         """No operation"""
@@ -47,9 +54,13 @@ class HandheldGameConsole:
 
     # endregion
 
-    def determine_accumulator_before_repeated_loop(self, program: Sequence[str], max_loop: int = 2):
+    def determine_accumulator_before_repeated_loop(self, program: Sequence[str]):
+        # Probably should be renamed now that accommodates natural termination
         self.load_program(program)
-        while max(self.line_execution_count) < max_loop:
-            prior, curr = self.execute_next_command()
+        while max(self.line_execution_count) < 2:
+            prior, curr, termination = self.execute_next_command()
+            if termination:
+                print('Program terminated naturally.')
+                return curr, termination
         # noinspection PyUnboundLocalVariable
-        return prior  # Last instruction is technically second execution
+        return prior, termination  # Last instruction is technically second execution
