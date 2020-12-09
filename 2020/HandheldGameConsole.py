@@ -1,7 +1,6 @@
 from typing import Sequence
 
 
-# TODO add termination for end of sequence
 class HandheldGameConsole:
     def __init__(self):
         self.accumulator = self.instruction_pointer = 0
