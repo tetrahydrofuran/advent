@@ -27,10 +27,36 @@ def part1(sequence, preamble_length, nth_not_satisfying=1):
             return number
 
 
+def part2(target, sequence):
+    """
+    Add numbers until greater than target, then start dropping from the start of list.
+    Repeat, unless target found.
+    """
+    running_total = 0
+    things = []
+    for i, num in enumerate(sequence):
+        if num == target:
+            break  # Means have reached the target number and messed up somewhere
+        s = sum(things)
+        if s == target:
+            print('Range found:', min(things), max(things), things)
+            return min(things) + max(things)
+        else:
+            things.append(num)
+            s = sum(things)
+            # print(s, things)
+            while sum(things) > target:
+                things.pop(0)  # Remove from beginning
+
+
 if __name__ == '__main__':
     with open('files/9.txt') as f:
         code = f.readlines()
     code = [int(i.strip()) for i in code]
-    print(part1(code, 25, 1))
+    # invalid = part1(code, 25, 1)  # 105950735
+    invalid = 105950735
+    # print(invalid)
+    print(part2(invalid, code))
     test_code = [35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182, 127, 219, 299, 277, 309, 576]
-    print(part1(test_code, 5, 1))
+    # print(part1(test_code, 5, 1))  # 127
+    print(part2(127, test_code))
